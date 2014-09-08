@@ -9,14 +9,32 @@ import br.ufcg.ppgcc.compor.ir.Titular;
 public class ImpostoDeRenda implements FachadaExperimento{
 	
 	List<Titular> titulares = new ArrayList<Titular>();
-	private boolean add;
+	
 	public void criarNovoTitular(Titular titular) {
 		if(titular.getNome()== null){
-			throw new ExcecaoImpostoDeRenda("Favor Informar seu nome");
+			try{
+				throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
+			} catch (Exception e) {
+				throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
+			}
+			
 		}
 		if(titular.getCpf()== null){
-			throw new ExcecaoImpostoDeRenda("Favor Informar seu CPF");
+			try{
+				throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
+			} catch (Exception e) {
+				throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
+			}
+			
 		}
+		if(titular.getCpf() != "000.000.000-00"){
+			try{
+				throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");
+			} catch (Exception e) {
+				throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");
+			}
+		}
+		
 		titulares.add(titular);
 	}
 		
