@@ -14,6 +14,9 @@ public class ImpostoDeRenda implements FachadaExperimento{
 		if(titular.getNome()== null){
 			throw new ExcecaoImpostoDeRenda("Favor Informar seu nome");
 		}
+		if(titular.getCpf()== null){
+			throw new ExcecaoImpostoDeRenda("Favor Informar seu CPF");
+		}
 		titulares.add(titular);
 	}
 		
