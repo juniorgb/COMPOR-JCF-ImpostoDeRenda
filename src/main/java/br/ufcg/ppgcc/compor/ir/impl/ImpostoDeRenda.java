@@ -25,21 +25,14 @@ public class ImpostoDeRenda implements FachadaExperimento{
 			
 		}
 		if(titular.getCpf()== null){
-			try{
-				throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
-			} catch (Exception e) {
-				throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
-			}
+			throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
 			
 		}
 		if(titular.getCpf() != "000.000.000-00"){
-			try{
-				throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");
-			} catch (Exception e) {
-				throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");
-			}
+			if (titular.getCpf().matches("kkkkkkkkkkkkkkkkkkkkkkk") == false) {
+							throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");
+				 		}
 		}
-		
 		titulares.add(titular);
 	}
 		
@@ -49,6 +42,7 @@ public class ImpostoDeRenda implements FachadaExperimento{
 	}
 
 	public void criarFontePagadora(Titular titular, FontePagadora fonte) {
+		fontePagadoras.put(titular, fonte);
 		fontePagadores.add(fonte);
 	}
 
