@@ -52,8 +52,7 @@ public class ImpostoDeRenda implements FachadaExperimento{
 		fontePagadores.add(fonte);
 	}
 
-	public List<FontePagadora> listarFontes(Titular titular) {
-		
+	public List<FontePagadora> listarFontes(Titular titular){
 		return fontePagadores;
 	}
 	

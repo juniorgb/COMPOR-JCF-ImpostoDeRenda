@@ -15,7 +15,7 @@ public class FontePagadoraHelper {
 		return fonte;
 	}
 
-	static FontePagadora criarFontePagadoraPadrao1() {
+	 static FontePagadora criarFontePagadoraPadrao1() {
 		return criarFontePagadora("UFCG", "00.000.000/0000-00", 50000);
 	}
 
@@ -23,7 +23,7 @@ public class FontePagadoraHelper {
 		return criarFontePagadora("UFPB", "00.000.000/0000-00", 20000);
 	}
 
-	static void verificaCriacaoFontes(FachadaExperimento fachada, Titular titular, FontePagadora... fontes) {
+	 static void verificaCriacaoFontes(FachadaExperimento fachada, Titular titular, FontePagadora... fontes) {
 		for (FontePagadora fonte : fontes) {
 			fachada.criarFontePagadora(titular, fonte);
 		}
