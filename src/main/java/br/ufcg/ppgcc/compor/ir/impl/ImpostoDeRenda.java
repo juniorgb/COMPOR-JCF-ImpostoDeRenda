@@ -1,6 +1,7 @@
 package br.ufcg.ppgcc.compor.ir.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import br.ufcg.ppgcc.compor.ir.Titular;
 public class ImpostoDeRenda implements FachadaExperimento{
 	
 	private List<Titular> titulares = new ArrayList<Titular>();
-	private Map<Titular,List <FontePagadora>> fontePagadoras = new HashMap<Titular, List<FontePagadora>>();
+	private Map<Titular,List<FontePagadora>> fontePagadoras = new LinkedHashMap<Titular, List<FontePagadora>>();
 	
 	
 	public void criarNovoTitular(Titular titular) {
@@ -40,11 +41,24 @@ public class ImpostoDeRenda implements FachadaExperimento{
 
 	public void criarFontePagadora(Titular titular, FontePagadora fonte) {
 		if(fontePagadoras.containsKey(titular)){
+		if(fonte.getNome()==null){
+			throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
+			}
+		if(fonte.getRendimentoRecebidos()==0.0){
+			throw new ExcecaoImpostoDeRenda("O campo rendimentos recebidos é obrigatório");
+		}
+		    else if(fonte.getRendimentoRecebidos()<0.0){
+			throw new ExcecaoImpostoDeRenda("O campo rendimentos recebidos deve ser maior que zero");
+			}
+		if(fonte.getCpfCnpj()==null){
+			throw new ExcecaoImpostoDeRenda("O campo CPF/CNPJ é obrigatório");
+			}else if(!fonte.getCpfCnpj().matches("[\\d]{2}\\.[\\d]{3}\\.[\\d]{3}\\/[\\d]{4}\\-[\\d]{2}")){
+				throw new excecaoCriarFonte("O campo CPF é inválido");
+			}
 		List<FontePagadora> listFont = fontePagadoras.get(titular);
 		listFont.add(fonte);
-		
-		
 		}
+		
 		
 	}
 
