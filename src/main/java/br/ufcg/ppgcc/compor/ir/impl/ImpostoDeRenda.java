@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.ufcg.ppgcc.compor.ir.Dependente;
+import br.ufcg.ppgcc.compor.ir.ExcecaoImpostoDeRenda;
 import br.ufcg.ppgcc.compor.ir.excecaoCriarFonte;
 import br.ufcg.ppgcc.compor.ir.FachadaExperimento;
 import br.ufcg.ppgcc.compor.ir.FontePagadora;
@@ -13,34 +14,30 @@ import br.ufcg.ppgcc.compor.ir.Titular;
 
 public class ImpostoDeRenda implements FachadaExperimento{
 	
-	private List<Titular> titulares = new ArrayList<Titular>();
-	private Map<Titular,List<FontePagadora>> fontePagadoras = new LinkedHashMap<Titular, List<FontePagadora>>();
-	private Map<Titular, List<Dependente>> dependentesTitular = new HashMap<Titular, List<Dependente>>();
-	private Map<Titular, List<Dependente>> dependentes = new HashMap<Titular, List<Dependente>>();
+	private Map<Titular, List<FontePagadora>> listaDeTitulares = new LinkedHashMap<Titular, List<FontePagadora>>();
+	private Map<Titular, List<Dependente>> listaDeDependentes = new HashMap<Titular, List<Dependente>>();
 	
 	public void criarNovoTitular(Titular titular) {
-		if(titular.getNome()== null){
+		if (titular.getNome() == null) {
 			throw new excecaoCriarFonte("O campo nome é obrigatório");
-			
+
 		}
-		if(titular.getCpf()== null){
+		if (titular.getCpf() == null) {
 			throw new excecaoCriarFonte("O campo CPF é obrigatório");
-			
+
 		}
-		
-			if (titular.getCpf().matches("\\d\\d\\d.\\d\\d\\d.\\d\\d\\d-\\d\\d") == false) {
-							throw new excecaoCriarFonte("O campo CPF está inválido");
-				 		}
-	
-		titulares.add(titular);
-		fontePagadoras.put(titular, new ArrayList<FontePagadora>());
-		dependentesTitular.put(titular, new ArrayList<Dependente>());
-		dependentes.put(titular, new ArrayList<Dependente>());
+
+		if (titular.getCpf().matches("\\d\\d\\d.\\d\\d\\d.\\d\\d\\d-\\d\\d") == false) {
+			throw new excecaoCriarFonte("O campo CPF está inválido");
+		}
+
+		listaDeTitulares.put(titular, new ArrayList<FontePagadora>());
+		listaDeDependentes.put(titular, new ArrayList<Dependente>());
 	}
 		
 	public List<Titular> listarTitulares() {
 		
-		return titulares;
+		return new ArrayList<Titular>(listaDeTitulares.keySet());
 	}
 
 	public void criarFontePagadora(Titular titular, FontePagadora fonte) {
@@ -59,41 +56,51 @@ public class ImpostoDeRenda implements FachadaExperimento{
 				}else if(!fonte.getCpfCnpj().matches("\\d\\d.\\d\\d\\d.\\d\\d\\d"+"/"+"\\d\\d\\d\\d-\\d\\d")){
 					throw new excecaoCriarFonte("O campo CPF/CNPJ é inválido");
 				}
-			if(fontePagadoras.containsKey(titular)==false){
+			if(listaDeTitulares.containsKey(titular)==false){
 				throw new excecaoCriarFonte("Titular não cadastrado");
 			}
 			
-			if(fontePagadoras.containsKey(titular)){
-				List<FontePagadora> listFont = fontePagadoras.get(titular);
+			if(listaDeTitulares.containsKey(titular)){
+				List<FontePagadora> listFont = listaDeTitulares.get(titular);
 				listFont.add(fonte);
 		}
 	
 	}
-	
-
-	
+		
 	public List<FontePagadora> listarFontes(Titular titular){
-		return fontePagadoras.get(titular);
+		return listaDeTitulares.get(titular);
 	}
 
-	
-
 	public void criarDependente(Titular titular, Dependente dependente) {
-		if(dependentes.containsKey(titular)){
-			List<Dependente> listDependente = dependentes.get(titular);
+		if(dependente.getCpf()==null){
+			throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
+			}
+		if(dependente.getNome()==null){
+			throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
+			}
+		if(dependente.getTipo()==0){
+			throw new ExcecaoImpostoDeRenda("O campo tipo é obrigatório");
+			}
+		if(dependente.getCpf().matches("\\d\\d\\d.\\d\\d\\d.\\d\\d\\d-\\d\\d") == false){
+			throw new ExcecaoImpostoDeRenda("O campo CPF é inválido");
+			}
+		if(dependente.getTipo() <= 0){
+			throw new ExcecaoImpostoDeRenda("O campo tipo é inválido");
+			}
+		if(listaDeDependentes.containsKey(titular) == false){
+			throw new ExcecaoImpostoDeRenda("Titular não cadastrado");
+			}
+					
+		if(listaDeDependentes.containsKey(titular)){
+			List<Dependente> listDependente = listaDeDependentes.get(titular);
 			listDependente.add(dependente);
-		}
+			}
 		
 	}
 	
 	public List<Dependente> listarDependentes(Titular titular) {
-				return dependentesTitular.get(titular);
+				return listaDeDependentes.get(titular);
 		}
-		
-
-	
-
-	
-	
+			
 }
 
