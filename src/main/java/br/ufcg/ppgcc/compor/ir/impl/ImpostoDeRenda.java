@@ -16,6 +16,7 @@ public class ImpostoDeRenda implements FachadaExperimento{
 	private List<Titular> titulares = new ArrayList<Titular>();
 	private Map<Titular,List<FontePagadora>> fontePagadoras = new LinkedHashMap<Titular, List<FontePagadora>>();
 	private Map<Titular, List<Dependente>> dependentesTitular = new HashMap<Titular, List<Dependente>>();
+	private Map<Titular, List<Dependente>> dependentes = new HashMap<Titular, List<Dependente>>();
 	
 	public void criarNovoTitular(Titular titular) {
 		if(titular.getNome()== null){
@@ -34,6 +35,7 @@ public class ImpostoDeRenda implements FachadaExperimento{
 		titulares.add(titular);
 		fontePagadoras.put(titular, new ArrayList<FontePagadora>());
 		dependentesTitular.put(titular, new ArrayList<Dependente>());
+		dependentes.put(titular, new ArrayList<Dependente>());
 	}
 		
 	public List<Titular> listarTitulares() {
@@ -61,7 +63,6 @@ public class ImpostoDeRenda implements FachadaExperimento{
 				throw new excecaoCriarFonte("Titular não cadastrado");
 			}
 			
-		
 			if(fontePagadoras.containsKey(titular)){
 				List<FontePagadora> listFont = fontePagadoras.get(titular);
 				listFont.add(fonte);
@@ -78,14 +79,14 @@ public class ImpostoDeRenda implements FachadaExperimento{
 	
 
 	public void criarDependente(Titular titular, Dependente dependente) {
-				if(dependentesTitular.containsKey(titular)){
-				List<Dependente> listDependente = dependentesTitular.get(titular);
-					listDependente.add(dependente);
-			}
-				
-			}
+		if(dependentes.containsKey(titular)){
+			List<Dependente> listDependente = dependentes.get(titular);
+			listDependente.add(dependente);
+		}
 		
-			public List<Dependente> listarDependentes(Titular titular) {
+	}
+	
+	public List<Dependente> listarDependentes(Titular titular) {
 				return dependentesTitular.get(titular);
 		}
 		
