@@ -43,7 +43,7 @@ public class FontePagadoraHelper {
 		try {
 			fachada.criarFontePagadora(titular, fonte);
 			Assert.fail("A criação de Fonte pagadora deveria ter lançado exceção");
-		} catch (ExcecaoImpostoDeRenda e) {
+		} catch (excecaoCriarFonte e) {
 			Assert.assertEquals(e.getMessage(), mensagem);
 		}
 	}

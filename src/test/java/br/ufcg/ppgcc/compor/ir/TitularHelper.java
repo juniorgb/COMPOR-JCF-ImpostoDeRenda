@@ -56,7 +56,7 @@ public class TitularHelper {
 		try {
 			fachada.criarNovoTitular(titular);
 			Assert.fail("A criação de Titular deveria ter lançado exceção");
-		} catch (ExcecaoImpostoDeRenda e) {
+		} catch (excecaoCriarFonte e) {
 			Assert.assertEquals(e.getMessage(), mensagem);
 		}
 	}
