@@ -82,8 +82,8 @@ public class DeclaracaoCompletaTest {
 	public void T_04_06_calculoImpostoComDependente() {
 		Titular titular1 = TitularHelper.criarTitularPadrao();
 		Dependente dependente1 = DependenteHelper.criarDependentePadrao1();
-		cadastrarCalcularImpostoDevido(4404.89, titular1, 51000, dependente1);
-		
+		novocadastrarCalcularImpostoDevido(4404.89, titular1, 51000, dependente1);
+		//Estava dando erro de duplicação no metodo cadastrar; o metodo cadastrarCalcularImpostoDevido foi criado e substiuido pelo metodo novocadastrarCalcularImpostoDevido
 		//TODO calcular com todas as faixas e com vários dependentes
 	}
 
@@ -101,7 +101,7 @@ public class DeclaracaoCompletaTest {
 		assertEquals(impostoDevido, completo.getImpostoDevido(), 0.1);
 	}
 
-	private void cadastrarCalcularImpostoDevido(double impostoDevido,
+	private void novocadastrarCalcularImpostoDevido(double impostoDevido,
 			Titular titular, int renda, Dependente... dependentes) {
 
 		fachada.criarNovoTitular(titular);

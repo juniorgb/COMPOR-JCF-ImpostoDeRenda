@@ -73,13 +73,16 @@ public class ImpostoDeRenda implements FachadaExperimento{
 	}
 		
 	public List<FontePagadora> listarFontes(Titular titular){
+		
 		return listaDeTitulares.get(titular);
+	
 	}
 
 	public void criarDependente(Titular titular, Dependente dependente) {
+		
 		if(dependente.getCpf()==null){
 			throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
-			}
+			} 
 		if(dependente.getNome()==null){
 			throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
 			}
@@ -111,9 +114,9 @@ public class ImpostoDeRenda implements FachadaExperimento{
 	
 	public Resultado declaracaoCompleta(Titular titular) {
 			
-			double aliquota = 0.0;
-			double parcelaDeDeducao = 0.0;
-			double impostoDevido = 0.0;
+			double aliquota = 0;
+			double parcelaDeDeducao = 0;
+			double impostoDevido = 0;
 			Resultado result = new Resultado();
 			result.getImpostoDevido();
 			
@@ -153,9 +156,76 @@ public class ImpostoDeRenda implements FachadaExperimento{
 			
 			impostoDevido = (somatorioDeRendimentos * aliquota) - parcelaDeDeducao;
 			result.setImpostoDevido(impostoDevido);
+			result.setImpostoDevido(this.calcularImpostoDevido(titular));
 			
 			return result;
 			
 		}
+	
+	public int calcularFaixa(double totalRendimentos) {
+			
+		if (totalRendimentos < 19645.33) {
+			return 1;
+		} else if (totalRendimentos >= 19645.33 && totalRendimentos < 29442.01) {
+			return 2;
+		} else if (totalRendimentos >= 29442.01 && totalRendimentos < 39256.57) {
+			return 3;
+		} else if (totalRendimentos >= 39256.57 && totalRendimentos < 49051.9) {
+			return 4;
+		} else if (totalRendimentos > 49051.80) {
+			return 5;
+		}
+		return 0;
+	}
+		
+	public double calcularImpostoDevido(Titular titular) {
+		
+		double aliquota = 0, parcelaDeducao = 0, totalRendimentos = 0, deducaoPorDependente = 0;
+		for (FontePagadora fp : this.listarFontes(titular)) {
+			
+			totalRendimentos += fp.getRendimentoRecebidos();
+		
+		}
+		
+		deducaoPorDependente = 1974.72 * this.listarDependentes(titular).size();
+		totalRendimentos -= deducaoPorDependente;
+		
+		switch (this.calcularFaixa(totalRendimentos)) {
+		
+		case 1:
+			aliquota = 0;
+			parcelaDeducao = 0;
+			break;
+		
+		case 2:
+			aliquota = 7.5 / 100;
+			parcelaDeducao = 1473.36;
+			break;
+		
+		case 3:
+			aliquota = 15.0 / 100;
+			parcelaDeducao = 3681.60;
+			break;
+		
+		case 4:
+			aliquota = 22.5 / 100;
+			parcelaDeducao = 6625.80;
+			break;
+		
+		case 5:
+			aliquota = 27.5 / 100;
+			parcelaDeducao = 9078.36;
+			break;
+		
+		default:
+			aliquota = 0;
+			parcelaDeducao = 0;
+			break;
+		}
+		
+		return (totalRendimentos * aliquota) - parcelaDeducao;
+	
+	}
+
 		
 }
