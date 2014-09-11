@@ -11,6 +11,7 @@ import br.ufcg.ppgcc.compor.ir.excecaoCriarFonte;
 import br.ufcg.ppgcc.compor.ir.FachadaExperimento;
 import br.ufcg.ppgcc.compor.ir.FontePagadora;
 import br.ufcg.ppgcc.compor.ir.Titular;
+import br.ufcg.ppgcc.compor.ir.Resultado;
 
 public class ImpostoDeRenda implements FachadaExperimento{
 	
@@ -101,6 +102,14 @@ public class ImpostoDeRenda implements FachadaExperimento{
 	public List<Dependente> listarDependentes(Titular titular) {
 				return listaDeDependentes.get(titular);
 		}
+	
+	public Resultado declaracaoCompleta(Titular titular) {
+		
+			Resultado result = new Resultado();
+			result.getImpostoDevido();
 			
+			return result;
+		}
+		
 }
 
